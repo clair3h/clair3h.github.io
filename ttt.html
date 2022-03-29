@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0, minimum-scale=1, maximum-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+        <title>井字遊戲</title>
+        <style type="text/css">
+            input, button {
+                font-size: 18px;
+                padding: 6px 20px;
+                margin: 4px 0;
+                border: 1px solid #222;
+                border-radius: 3px;
+            }
+            button {
+                color: #fff;
+                border-color: #2091c3;
+                background-color: #2091c3;
+            }
+            button:hover {
+                color: #fff;
+                border-color: #167fad;
+                background-color: #167fad;
+            }
+            button.face {
+                font-size: 40px;
+                border-color: #a6e4ff;
+                background-color: #a6e4ff;
+            }
+            button.face:hover {
+                border-color: #548ea7;
+                background-color: #548ea7;
+            }
+            button.ttt, 
+            button.face {
+                border: 0px;
+                border-radius: 5px;
+                padding: 10px 20px;
+                width: 80px;
+                height: 80px;
+            }
+            button.ttt:hover {
+                font-weight: normal;
+            }
+    
+            input[type="color"] {
+                width: 30px;
+                height: 30px;
+                padding: 4px;
+                background-color: #fff;
+                border: 1px solid #666;
+                border-radius: 50%;
+            }
+            input[type="color"]::-webkit-color-swatch,
+            input[type="color"]::-webkit-color-swatch-wrapper {
+                border: none;
+                border-radius: 50%;
+                padding: 0;
+            }
+            input[type="text"] {
+                color: blue;
+            }
+            input[type=checkbox] {
+                transform: scale(1.5);
+            }
+            input[type="text"].text-block {
+                width: 100%;
+            }
+    
+            label {
+                cursor: pointer;
+                margin: 0 5px;
+            }
+            select {
+                border: solid 1px #282923;
+                padding: 6px;
+                width: 100%;
+            }
+    
+            table {
+                border: solid 1px #282923;
+                border-collapse: collapse;
+                width: 100%;
+            }
+            table th,
+            table td {
+                padding: 5px;
+                text-align: right;
+            }
+            table th {
+                color: #fff;
+                background-color: #282923;
+            }
+            table tr:nth-child(even) {
+                background: #eee;
+            }
+            table th:nth-child(1),
+            table td:nth-child(1) {
+                text-align: center;
+            }
+    
+            div.output,
+            div.passage {
+                font-family: Consolas;
+                border: solid 1px #666;
+                padding: 6px;
+                margin: 10px 0;
+                width: 100%;
+                padding: 20px;
+            }
+            div.output {
+                color: #fff;
+                background-color: #282923;
+            }
+    
+            div.passage {
+                color: #333;
+                background-color: #c6e3d8;
+            }
+    
+            .fruit {
+                color: #4eed3b;
+            }
+    
+            div.basket {
+                border: solid 2px #007aae;
+                border-radius: 2px;
+                padding: 6px;
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+            }
+            div.basket .item {
+                text-align: center;
+                width: 120px;
+            }
+            div.basket .item .fruit {
+                font-size: 40px;
+                display: inline-block;
+                background-color: #fff;
+                border: 1px solid #333;
+                margin: 5px;
+                padding: 2px;
+                border-radius: 3px;
+            }
+            div.basket .break {
+                flex-basis: 100%;
+                height: 0;
+            }
+            .player {
+                font-size: 24px;
+            }
+            .player span {
+                font-size: 48px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="js-inpage">
+                <div class="row">
+                    <div class="col-lg-4 text-center">
+                        <h1>挑選角色</h1>
+                        <div id="divSwitches">
+                            <button type="button" id="btnF1" class="face">&#128565;</button>
+                            <button type="button" id="btnF2" class="face">&#128566;</button>
+                            <button type="button" id="btnF3" class="face">&#128564;</button>
+                            <br>
+                            <button type="button" id="btnF4" class="face">&#128565;&#8205;&#128171;</button>
+                            <button type="button" id="btnF5" class="face">&#128566;&#8205;&#127787;&#65039;</button>
+                            <button type="button" id="btnF6" class="face">&#128519;</button>
+                            <br>
+                            <button type="button" id="btnF7" class="face">&#128520;</button>
+                            <button type="button" id="btnF8" class="face">&#128545;</button>
+                            <button type="button" id="btnF9" class="face">&#128169;</button>
+                        </div>
+                        <div id="player1" class="player">
+                        </div>
+                        <div id="player2" class="player">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-center">
+                        <h1>井字遊戲</h1>
+                        <div id="divSwitches">
+                            <button type="button" id="btnN1" class="ttt">&nbsp;</button>
+                            <button type="button" id="btnN2" class="ttt">&nbsp;</button>
+                            <button type="button" id="btnN3" class="ttt">&nbsp;</button>
+                            <br>
+                            <button type="button" id="btnN4" class="ttt">&nbsp;</button>
+                            <button type="button" id="btnN5" class="ttt">&nbsp;</button>
+                            <button type="button" id="btnN6" class="ttt">&nbsp;</button>
+                            <br>
+                            <button type="button" id="btnN7" class="ttt">&nbsp;</button>
+                            <button type="button" id="btnN8" class="ttt">&nbsp;</button>
+                            <button type="button" id="btnN9" class="ttt">&nbsp;</button>
+                        </div>
+                        <div id="divWinner">
+                        </div>
+                        <button type="button" id="btnReset" onclick="reset()">Play Again</button>
+                    </div>
+                </div> 
+                <script>
+                    var btnNS = document.querySelectorAll('[id^="btnN"]');
+                    var btnFS = document.querySelectorAll('[id^="btnF"]');
+                    var iCount = 0;
+                    var board = ['','','','','','','','',''];
+                    var lines = [
+                        [0,1,2], [3,4,5], [6,7,8],
+                        [0,3,6], [1,2,7], [2,5,8],
+                        [0,4,8], [2,4,6]
+                    ];
+                    var isWin = false;
+                    var theWinner = document.getElementById("divWinner");
+                    btnNS.forEach(function(btnN) {
+                        btnN.style.fontSize = "32px";
+                        btnN.style.color = "white";
+                        btnN.style.backgroundColor = "#7e7f87";
+                        btnN.addEventListener("click", function() {switchButton(btnN.id)});
+                    });
+                    btnFS.forEach(function(btnF) {
+                        btnF.addEventListener("click", function() {selectFace(btnF.id)});
+                    });
+                    function reset(){
+                        board = ['','','','','','','','',''];
+                        console.log(board)
+                        iCount = 0;
+                        isWin = false;
+                        btnNS.forEach(function(btnN) {
+                            btnN.style.backgroundColor = "#7e7f87";
+                            btnN.innerHTML = "&nbsp;";
+                        });
+                        theWinner.innerHTML = "";
+                    }
+
+                    function selectFace(btnID) {
+                        var btnF = document.getElementById(btnID);
+                        var player1 = document.getElementById("player1");
+                        player1.innerHTML = "Player 1: <span>"+btnF.innerHTML;
+                    }
+
+                    function switchButton(btnID) {
+                        var btnN = document.getElementById(btnID);
+                        //console.log(btnID[4]);
+                        var bi = parseInt(btnID[4])-1;
+                        //console.log(bi);
+                        //console.log(isWin);
+                        if (isWin == false){
+                            if (btnN.innerHTML == "&nbsp;"){
+                                if (iCount%2 == 0){
+                                    btnN.style.backgroundColor = "#22bb22";
+                                    btnN.innerHTML = "O";
+                                    iCount += 1;
+                                    board[bi] = 'O';
+                                }
+                                else {
+                                    btnN.style.backgroundColor = "#cc4444";
+                                    btnN.innerHTML = "X";
+                                    iCount += 1;
+                                    board[bi] = 'X';
+                                }
+                            }
+                        }
+                        checkWinner();
+                    }
+                    function checkWinner(){
+                        // console.log(lines);
+                        for (var i = 0; i < lines.length; i++){
+                            if (board[lines[i][0]] != ''){
+                                if (board[lines[i][0]] == board[lines[i][1]] && board[lines[i][1]] == board[lines[i][2]]){    
+                                    //var winner = board[lines[i][0]];
+                                    //console.log(winner);
+                                    //console.log(board);
+                                    //console.log(board[lines[i][0]]);
+                                    //console.log(board[lines[i][1]]);
+                                    //console.log(board[lines[i][2]]);
+                                    theWinner.innerHTML = "The winner is "+board[lines[i][0]];
+                                    isWin = true;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                    }
+                </script>
+            </div>
+        </div>
+    </body>
+</html>

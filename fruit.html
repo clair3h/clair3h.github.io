@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0, minimum-scale=1, maximum-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Neonderthaw&display=swap" rel="stylesheet">
+        <title>水果籃</title>
+        <style type="text/css">
+            input, button {
+                font-size: 18px;
+                padding: 6px 20px;
+                margin: 4px 0;
+                border: 1px solid #222;
+                border-radius: 3px;
+            }
+            button {
+                color: #fff;
+                border-color: #2091c3;
+                background-color: #2091c3;
+            }
+            button:hover {
+                color: #fff;
+                border-color: #167fad;
+                background-color: #167fad;
+            }
+            button.ttt {
+                border: 0px;
+                border-radius: 5px;
+            }
+            button.ttt:hover {
+                font-weight: normal;
+            }
+    
+            input[type="color"] {
+                width: 30px;
+                height: 30px;
+                padding: 4px;
+                background-color: #fff;
+                border: 1px solid #666;
+                border-radius: 50%;
+            }
+            input[type="color"]::-webkit-color-swatch,
+            input[type="color"]::-webkit-color-swatch-wrapper {
+                border: none;
+                border-radius: 50%;
+                padding: 0;
+            }
+            input[type="text"] {
+                color: blue;
+            }
+            input[type=checkbox] {
+                transform: scale(1.5);
+            }
+            input[type="text"].text-block {
+                width: 100%;
+            }
+    
+            label {
+                cursor: pointer;
+                margin: 0 5px;
+            }
+            select {
+                border: solid 1px #282923;
+                padding: 6px;
+                width: 100%
+            }
+    
+            table {
+                border: solid 1px #282923;
+                border-collapse: collapse;
+                width: 100%;
+            }
+            table th,
+            table td {
+                padding: 5px;
+                text-align: right;
+            }
+            table th {
+                color: #fff;
+                background-color: #282923;
+            }
+            table tr:nth-child(even) {
+                background: #eee;
+            }
+            table th:nth-child(1),
+            table td:nth-child(1) {
+                text-align: center;
+            }
+    
+            div.output,
+            div.passage {
+                font-family: Consolas;
+                border: solid 1px #666;
+                padding: 6px;
+                margin: 10px 0;
+                width: 100%;
+                padding: 20px;
+            }
+            div.output {
+                color: #fff;
+                background-color: #282923;
+            }
+    
+            div.passage {
+                color: #333;
+                background-color: #c6e3d8;
+            }
+    
+            .fruit {
+                color: #edd23b;
+            }
+    
+            div.basket {
+                border: solid 3px #007aae;
+                border-radius: 2px;
+                padding: 6px;
+                /* margin: 10px 0; */
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+            }
+            div.basket .item {
+                text-align: center;
+                /* width: 120px; */
+                /* margin: 5px; */
+            }
+            div.basket .item .fruit {
+                font-size: 45px;
+                display: inline-block;
+                background-color: #fffad6;
+                border-radius: 20px;
+                border:5px solid #fcba03;
+                width: 150px;
+                height: 150px;
+                /* margin: 5px; */
+                /* padding: 2px; */
+                
+            }
+            span.fruitname,
+            span.fnumber {
+                font-size: 20px;
+                font-weight: bold;
+                font-family: 'Neonderthaw', cursive;
+            }
+            span.fruitname {
+                color: #ffd86b;
+            }
+            span.fnumber{
+                color:#fcba03;
+            }
+            div.basket .break {
+                flex-basis: 100%;
+                height: 0;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <h1 class="text-center">水果籃</h1>
+            <hr>
+            <div class="js-inpage">
+                <div class="row">
+                    <div class="col-lg-2 col-sm-3" >
+                        <select id="selFruit" size="10">
+                        </select>
+                        <br>
+                        <button type="button" onclick="clearBasket();">清空</button>
+                    </div>  
+                    <div class="col-lg-10 col-sm-9">
+                        <div id="divBasket" class="basket row">
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    window.onload = function() {
+                        // 宣告時未設 var 即全域變數
+                        oFruit = {
+                            'tomato':     ['tomato', '&#127813;', 0],
+                            'grapes':     ['grapes', '&#127815;', 0],
+                            'melon':      ['melon', '&#127816;', 0],
+                            'watermelon': ['watermelon', '&#127817;', 0],
+                            'tangerine':  ['tangerine', '&#127818;', 0],
+                            'lemon':      ['lemon', '&#127819;', 0],
+                            'banana':     ['banana', '&#127820;', 0],
+                            'pineapple':  ['pineapple', '&#127821;', 0],
+                            'red_apple':   ['red apple', '&#127822;', 0],
+                            'green_apple': ['green apple', '&#127823;', 0],
+                            'pear':       ['pear', '&#127824;', 0],
+                            'peach':      ['peach', '&#127825;', 0],
+                            'cherries':   ['cherries', '&#127826;', 0],
+                            'strawberry': ['strawberry', '&#127827;', 0],
+                            'avocado':    ['avocado', '&#129361;', 0],
+                            'kiwifruit':  ['kiwifruit', '&#129373;', 0],
+                        };
+                       
+                        var aFruit = Object.keys(oFruit);
+                        // console.log(aFruit);
+                        var selFruit = document.querySelector("#selFruit");
+                        aFruit.forEach(function(fruit) {
+                            var aValue = oFruit[fruit];
+                            // console.log(aValue);
+                            selFruit.add(new Option(aValue[0][0].toUpperCase()+aValue[0].slice(1), fruit));
+                        });
+
+                        selFruit.addEventListener("change", function() {putFruit()});
+                        selFruit.addEventListener("dblclick", function() {putFruit()});
+                    }
+
+                    function putFruit() {
+                        var selFruit = document.querySelector("#selFruit");
+                        var fruit = selFruit.options[selFruit.selectedIndex].value;
+                        if (fruit != '') {
+                            var fruitName = selFruit.options[selFruit.selectedIndex].text;
+                            // oFruit[fruit] 是一個 array
+                            // 例如 'tomato': ['tomato', '&#127813;', 0]
+                            // 的 ['tomato', '&#127813;', 0]
+
+                            if (oFruit[fruit][2] == 0) {
+                                oFruit[fruit][2] = 1;
+                                divBasket.innerHTML += '<div class="item col-lg-3 mb-3"><span class="fruit">'
+                                    +oFruit[fruit][1]+'<br><span class="fruitname">'+fruitName
+                                    +'</span> <span class="fnumber" id="key-'+fruit+'">1</span></span></div>';
+                            }
+                            else if (oFruit[fruit][2] > 0) {
+                                oFruit[fruit][2] += 1;
+                                var keyfruit = document.querySelector('#key-'+fruit);
+                                // console.log(oFruit[fruit]);
+                                // console.log(keyfruit.textContent);
+                                keyfruit.textContent = oFruit[fruit][2];
+                            }
+                        }
+                    }
+
+                    function clearBasket() {
+                        divBasket.innerHTML = '';
+                        var aFruit = Object.keys(oFruit);
+                        aFruit.forEach(function(fruit) {
+                            oFruit[fruit][2] = 0;
+                        });
+                    }
+                </script>
+            </div>
+        </div>
+    </body>
+</html>
